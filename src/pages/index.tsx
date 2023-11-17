@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import Layout from '../components/Layout';
-import Tabela from '../components/Tabela';
 import Cliente from '@/core/Cliente';
-
+import dynamic from 'next/dynamic';
+const Tabela = dynamic(() => import('../components/Tabela'), { ssr: false })
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
