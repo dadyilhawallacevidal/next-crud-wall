@@ -3,7 +3,8 @@ import { Inter } from 'next/font/google'
 import Layout from '../components/Layout';
 import Cliente from '@/core/Cliente';
 import dynamic from 'next/dynamic';
-const Tabela = dynamic(() => import('../components/Tabela'), { ssr: false })
+import Tabela from '@/components/Tabela';
+// const Tabela = dynamic(() => import('../components/Tabela'), { ssr: false, loading: () => <p><b>Loading ...</b></p> })
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
