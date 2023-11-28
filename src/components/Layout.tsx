@@ -8,7 +8,8 @@ interface LayoutProps {
 
 export default function Layout(props: LayoutProps){
     var children : any;
-    if(props.children.legnth){
+    // console.log(props.children.length);
+    if(props.children.length !== undefined){
         children = props.children.map(
             (child: any, i : any) => React.cloneElement((child), {key: i})
         );
@@ -27,7 +28,7 @@ export default function Layout(props: LayoutProps){
             </Titulo>
             <div className="p-6">
                 {
-                    children
+                    props.children
                 }
             </div>
         </div>
