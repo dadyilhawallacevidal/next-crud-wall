@@ -28,7 +28,7 @@ export default function Layout(props: LayoutProps){
             </Titulo>
             <div className="p-6">
                 {
-                    props.children
+                    children
                 }
             </div>
         </div>

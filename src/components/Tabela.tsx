@@ -1,5 +1,5 @@
 import Cliente from "@/core/Cliente";
-import { IconeEdicao, IconeLixo } from "@/components/Icones"
+import { IconeEdicao, IconeLixo } from "@/components/Icones";
 interface TabelaProps {
     clientes: Cliente[];
     clienteSelecionado?: (cliente: Cliente) => void;
@@ -58,7 +58,6 @@ export default function Tabela(props: TabelaProps) {
                         {IconeLixo}
                     </button>
                 ) : false}
-
             </td>
         );
     }
@@ -66,7 +65,7 @@ export default function Tabela(props: TabelaProps) {
     return (
         <table className="w-full rounded-xl overflow-hidden">
             <thead className={`
-                bg-gradient-to-r from-purple-500 to bg-purple-800
+                bg-gradient-to-r from-pink-500 to bg-purple-800
                 text-gray-100
             `}>
                 {renderizarCabecalho()}
