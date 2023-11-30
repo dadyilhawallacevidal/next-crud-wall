@@ -1,4 +1,4 @@
-import { EnumType } from "typescript";
+
 
 interface BotaoProps {
     cor?: 'green' | 'blue' | 'gray';
