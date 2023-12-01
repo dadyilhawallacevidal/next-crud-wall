@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import FormularioModal from '@/components/FormularioModal';
 import ClienteRepositorio from '@/core/ClienteRepositorio';
 import ColecaoCliente from '@/core/db/ColecaoCliente';
+import BotaoSwitch from '@/components/BotaoSwitch';
 // import Botao from '@/components/Botao';
 const Botao = dynamic(() => import('../components/Botao'), { ssr: false, loading: () => <p><b>Loading ...</b></p> })
 const inter = Inter({ subsets: ['latin'] })
@@ -18,6 +19,7 @@ export default function Home() {
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [visivel, setVisivel] = useState<'tabela' | 'form'>('tabela');
   const [showDialog, setShowDialog] = useState("n");
+  const [tipoInterface, setTipoInterface] = useState("semModal");
 
   const repo: ClienteRepositorio = new ColecaoCliente();
 
@@ -32,8 +34,9 @@ export default function Home() {
 
   function obterTodos() {
     repo.obterTodos().then((clientes) => {
-      setClientes(clientes.sort((cliente) => cliente.nome));
+      setClientes(clientes);
       setShowDialog("n");
+      // setShowDialog("tabela");
     });
   }
 
@@ -51,6 +54,7 @@ export default function Home() {
 
   async function salvarCliente(cliente: Cliente) {
     setShowDialog('n');
+    // setVisivel('tabela');
     await repo.salvar(cliente);
     obterTodos();
   }
@@ -67,25 +71,28 @@ export default function Home() {
         bg-gradient-to-r from-blue-500   to-purple-500
         `}>
       <Layout titulo="Cadastro Simples">
-        {/* {visivel === 'tabela' ? (
+        <div className='flex justify-end mb-2'>
+          <BotaoSwitch />
+        </div>
+        {visivel === 'tabela' ? (
           <>
             <div className="flex justify-end">
-              <Botao cor="green" className='mb-4'onClick={() => novoCliente()}>Novo Cliente</Botao>
+              <Botao cor="green" className='mb-4' onClick={() => novoCliente()}>Novo Cliente</Botao>
             </div>
             <Tabela clientes={clientes} clienteSelecionado={clienteSelecionado} clienteExcluido={clienteExcluido} />
           </>
-        ) : 
-        <Formulario 
-          cliente={cliente} 
-          clienteMudou={salvarCliente}
-          cancelado={() => setVisivel('tabela')} 
+        ) :
+          <Formulario
+            cliente={cliente}
+            clienteMudou={salvarCliente}
+            cancelado={() => setVisivel('tabela')}
           />
 
-      } */}
-        <div className="flex justify-end">
+        }
+        {/* <div className="flex justify-end">
           <Botao cor="green" className='mb-4' onClick={() => novoCliente()}>Novo Cliente</Botao>
         </div>
-        <Tabela clientes={clientes} clienteSelecionado={clienteSelecionado} clienteExcluido={clienteExcluido} />
+        <Tabela clientes={clientes} clienteSelecionado={clienteSelecionado} clienteExcluido={clienteExcluido} /> */}
         <FormularioModal
           showDialog={showDialog}
           closeDialog={() => setShowDialog('n')}
