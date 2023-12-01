@@ -7,8 +7,8 @@ interface BotaoSwitch{
 
 export default function BotaoSwitch(props: BotaoSwitch) {
     return(
-        <label className={style.switch}>
-            <input type="checkbox" checked={props.tipoInterface === "semModal" ? false : 'checked'} onChange={props.setInterface}/>
+        <label className={style.switch} htmlFor="buttonSwitch">
+            <input id="buttonSwitch" type="checkbox" checked={props.tipoInterface === "semModal" ? false : true} onChange={props.setInterface}/>
                 <span className={`${style.slider} ${style.round}`}></span>
         </label>
     );
