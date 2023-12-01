@@ -22,7 +22,6 @@ export default function Home() {
   const [tipoInterface, setTipoInterface] = useState("semModal");
 
   const repo: ClienteRepositorio = new ColecaoCliente();
-
   useEffect(obterTodos, []);
 
   // const clientes = [
@@ -35,16 +34,31 @@ export default function Home() {
   function obterTodos() {
     repo.obterTodos().then((clientes) => {
       setClientes(clientes);
-      setShowDialog("n");
+      // setShowDialog("n");
       // setShowDialog("tabela");
+      controleInterface("tabela");
     });
+  }
+
+  function mudarInterface() {
+    setTipoInterface(tipoInterface === "semModal" ? "comModal" : "semModal");
+  }
+
+  function controleInterface(tabelaForm: string) {
+    if (tipoInterface === "semModal") {
+      tabelaForm === "form" ? setVisivel('form') : setVisivel("tabela");
+      return;
+    }
+    tabelaForm === "form" ? setShowDialog('y') : setShowDialog('n');
   }
 
   function clienteSelecionado(cliente: Cliente) {
     setCliente(cliente);
     // setVisivel('form');
-    setShowDialog('y');
+    // setShowDialog('y');
+    controleInterface("form");
   }
+
 
 
   async function clienteExcluido(cliente: Cliente) {
@@ -53,7 +67,8 @@ export default function Home() {
   }
 
   async function salvarCliente(cliente: Cliente) {
-    setShowDialog('n');
+    // setShowDialog('n');
+    controleInterface("tabela");
     // setVisivel('tabela');
     await repo.salvar(cliente);
     obterTodos();
@@ -61,7 +76,8 @@ export default function Home() {
   function novoCliente() {
     setCliente(Cliente.vazio());
     // setVisivel('form');
-    setShowDialog('y');
+    // setShowDialog('y');
+    controleInterface("form");
   }
 
 
@@ -71,11 +87,12 @@ export default function Home() {
         bg-gradient-to-r from-blue-500   to-purple-500
         `}>
       <Layout titulo="Cadastro Simples">
-        <div className='flex justify-end mb-2'>
-          <BotaoSwitch />
-        </div>
+
         {visivel === 'tabela' ? (
           <>
+            <div className='flex justify-end mb-2'>
+              <BotaoSwitch tipoInterface={tipoInterface} setInterface={mudarInterface} />
+            </div>
             <div className="flex justify-end">
               <Botao cor="green" className='mb-4' onClick={() => novoCliente()}>Novo Cliente</Botao>
             </div>
