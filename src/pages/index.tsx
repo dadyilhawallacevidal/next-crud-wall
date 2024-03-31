@@ -10,77 +10,30 @@ import FormularioModal from '@/components/FormularioModal';
 import ClienteRepositorio from '@/core/ClienteRepositorio';
 import ColecaoCliente from '@/core/db/ColecaoCliente';
 import BotaoSwitch from '@/components/BotaoSwitch';
+import useClientes from '@/hooks/useClientes';
 // import Botao from '@/components/Botao';
 const Botao = dynamic(() => import('../components/Botao'), { ssr: false, loading: () => <p><b>Loading ...</b></p> })
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const [cliente, setCliente] = useState<Cliente>(Cliente.vazio());
-  const [clientes, setClientes] = useState<Cliente[]>([]);
-  const [visivel, setVisivel] = useState<'tabela' | 'form'>('tabela');
-  const [showDialog, setShowDialog] = useState("n");
-  const [tipoInterface, setTipoInterface] = useState("semModal");
+  
+    const {
+        selecionarCliente,
+        excluirCliente,
+        novoCliente,
+        obterTodos,
+        visivel,
+        tipoInterface,
+        clientes,
+        cliente,
+        salvarCliente,
+        setVisivel,
+        mudarInterface,
+        showDialog,
+        setShowDialog
 
-  const repo: ClienteRepositorio = new ColecaoCliente();
-  useEffect(obterTodos, []);
-
-  // const clientes = [
-  //   new Cliente("Ana", 34, "1"),
-  //   new Cliente("Bia", 45, "2"),
-  //   new Cliente("Carlos", 23, "3"),
-  //   new Cliente("Pedro", 54, "4"),
-  // ];
-
-  function obterTodos() {
-    repo.obterTodos().then((clientes) => {
-      setClientes(clientes);
-      // setShowDialog("n");
-      // setShowDialog("tabela");
-      controleInterface("tabela");
-    });
-  }
-
-  function mudarInterface() {
-    setTipoInterface(tipoInterface === "semModal" ? "comModal" : "semModal");
-  }
-
-  function controleInterface(tabelaForm: string) {
-    if (tipoInterface === "semModal") {
-      tabelaForm === "form" ? setVisivel('form') : setVisivel("tabela");
-      return;
-    }
-    tabelaForm === "form" ? setShowDialog('y') : setShowDialog('n');
-  }
-
-  function clienteSelecionado(cliente: Cliente) {
-    setCliente(cliente);
-    // setVisivel('form');
-    // setShowDialog('y');
-    controleInterface("form");
-  }
-
-
-
-  async function clienteExcluido(cliente: Cliente) {
-    await repo.excluir(cliente);
-    obterTodos();
-  }
-
-  async function salvarCliente(cliente: Cliente) {
-    // setShowDialog('n');
-    controleInterface("tabela");
-    // setVisivel('tabela');
-    await repo.salvar(cliente);
-    obterTodos();
-  }
-  function novoCliente() {
-    setCliente(Cliente.vazio());
-    // setVisivel('form');
-    // setShowDialog('y');
-    controleInterface("form");
-  }
-
-
+      } = useClientes();
+selecionarCliente
   return (
     <div className={`
         flex h-screen justify-center items-center
@@ -96,7 +49,7 @@ export default function Home() {
             <div className="flex justify-end">
               <Botao cor="green" className='mb-4' onClick={() => novoCliente()}>Novo Cliente</Botao>
             </div>
-            <Tabela clientes={clientes} clienteSelecionado={clienteSelecionado} clienteExcluido={clienteExcluido} />
+            <Tabela clientes={clientes} clienteSelecionado={selecionarCliente} clienteExcluido={excluirCliente} />
           </>
         ) :
           <Formulario
